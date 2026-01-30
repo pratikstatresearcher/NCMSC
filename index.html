@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NCMSC-26 | Research Interface</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="National Conference on Mathematical and Statistical Computing 2026">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --gold: #FFD700;
+  --royal-blue: #002147;
+  --neon-cyan: #00f3ff;
+  --text-white: #ffffff;
+  --glass-bg: rgba(13, 25, 48, 0.75);
+  --border-light: rgba(255, 255, 255, 0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #05070a;
+  color: var(--text-white);
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  perspective: 1500px; /* Essential for 3D Tilt */
+}
+
+/* Background Canvas */
+#bg-canvas {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: -2;
+  background: radial-gradient(circle at center, #0a192f 0%, #000000 100%);
+}
+
+/* Main Container Card (3D Tilt Target) */
+.card {
+  width: 100%;
+  max-width: 950px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px) saturate(120%);
+  -webkit-backdrop-filter: blur(25px) saturate(120%);
+  border: 1px solid var(--border-light);
+  border-top: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 24px;
+  box-shadow: 
+    0 30px 60px rgba(0,0,0,0.8),
+    inset 0 0 40px rgba(0, 243, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  transform-style: preserve-3d; /* 3D Effect */
+  transition: transform 0.1s ease-out; /* Smooth movement */
+}
+
+/* Header Section */
+.header-section {
+  text-align: center;
+  padding: 40px 30px 20px;
+  border-bottom: 1px solid var(--border-light);
+  transform: translateZ(20px); /* 3D Depth */
+}
+
+.univ-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #fff, var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.school-name {
+  font-size: 0.9rem;
+  color: var(--neon-cyan);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.grant-badge {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 6px 16px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 50px;
+  color: var(--gold);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background: rgba(255, 215, 0, 0.05);
+}
+
+/* Hero Section */
+.hero-section {
+  padding: 40px 30px;
+  text-align: center;
+  transform: translateZ(30px); /* More 3D Depth */
+}
+
+.conf-full-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+}
+
+.conf-short-name {
+  color: var(--neon-cyan);
+}
+
+.hero-description {
+  color: #a0aab5;
+  max-width: 650px;
+  margin: 20px auto;
+  line-height: 1.6;
+}
+
+/* Countdown */
+.countdown-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.countdown-box {
+  background: rgba(0,0,0,0.4);
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  min-width: 70px;
+}
+.c-val { display: block; font-size: 1.5rem; font-weight: 700; color: white; font-family: 'Orbitron', sans-serif; }
+.c-label { font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+
+/* Modern Audio Player */
+.audio-interface {
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid var(--neon-cyan);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transform: translateZ(40px); /* Floating Audio */
+}
+
+.player-controls { display: flex; align-items: center; gap: 15px; }
+
+.play-toggle-btn {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  border: none;
+  color: black;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--neon-cyan);
+  transition: 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.play-toggle-btn:hover { transform: scale(1.1); background: white; }
+
+.track-info { text-align: left; }
+.track-title { font-size: 0.9rem; font-weight: 700; color: white; display: block; }
+.track-status { font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Audio Visualizer Animation */
+.visualizer {
+  display: flex; gap: 4px; align-items: flex-end; height: 30px;
+}
+.bar { width: 4px; background: var(--gold); height: 5px; border-radius: 2px; transition: 0.2s; }
+.playing .bar { animation: equalizer 1s infinite; }
+.bar:nth-child(1) { animation-duration: 0.8s; }
+.bar:nth-child(2) { animation-duration: 1.1s; }
+.bar:nth-child(3) { animation-duration: 0.9s; }
+.bar:nth-child(4) { animation-duration: 1.2s; }
+.bar:nth-child(5) { animation-duration: 0.7s; }
+
+@keyframes equalizer {
+  0% { height: 5px; }
+  50% { height: 25px; }
+  100% { height: 5px; }
+}
+
+/* Organizers Flex Layout (Centered) */
+.organizer-section {
+  padding: 40px 30px;
+  background: rgba(0,0,0,0.2);
+  border-top: 1px solid var(--border-light);
+  transform: translateZ(20px);
+}
+
+.org-flex {
+  display: flex;
+  justify-content: center; /* Forces centering */
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.org-card {
+  flex: 0 1 200px; /* Uniform width */
+  padding: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  transition: 0.3s;
+  text-align: center;
+}
+.org-card:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-5px);
+  border-color: var(--neon-cyan);
+}
+
+.role { color: var(--neon-cyan); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
+.name { color: white; font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+.desig { color: #888; font-size: 0.8rem; }
+
+/* Footer */
+.footer {
+  padding: 20px;
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .conf-full-name { font-size: 1.5rem; }
+  .univ-name { font-size: 1rem; }
+  .audio-interface { flex-direction: column; gap: 15px; text-align: center; }
+  .player-controls { flex-direction: column; }
+  .track-info { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="card" id="tiltCard">
+  
+  <div class="header-section">
+    <div class="univ-name">Punyashlok Ahilyadevi Holkar Solapur University</div>
+    <div class="school-name">School of Computational Sciences</div>
+    <div class="grant-badge">PM-USHA (MERU) Grant</div>
+  </div>
+
+  <div class="hero-section">
+    <div class="conf-full-name">
+      National Conference on Mathematical & Statistical Computing <span class="conf-short-name">(NCMSC-26)</span>
+    </div>
+
+    <div class="countdown-container">
+      <div class="countdown-box"><span class="c-val" id="d">00</span><span class="c-label">Days</span></div>
+      <div class="countdown-box"><span class="c-val" id="h">00</span><span class="c-label">Hours</span></div>
+      <div class="countdown-box"><span class="c-val" id="m">00</span><span class="c-label">Mins</span></div>
+      <div class="countdown-box"><span class="c-val" id="s">00</span><span class="c-label">Secs</span></div>
+    </div>
+
+    <p class="hero-description">
+      Exploring the frontiers of data modeling, algorithms, and computational intelligence. 
+      Join us on <strong>February 09-10, 2026</strong>.
+    </p>
+
+    <div class="audio-interface" id="audioInterface">
+      <div class="player-controls">
+        <button class="play-toggle-btn" id="mainPlayBtn">
+          <i class="fas fa-play"></i>
+        </button>
+        <div class="track-info">
+          <span class="track-title">Introduction & Guidelines</span>
+          <span class="track-status" id="trackStatus">Ready to play</span>
+        </div>
+      </div>
+      <div class="visualizer" id="visualizer">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div>
+      </div>
+      
+      <audio id="confAudio" src="Intro.mp3"></audio>
+    </div>
+  </div>
+
+  <div class="organizer-section">
+    <div class="org-flex">
+      <div class="org-card">
+        <div class="role">Chief Patron</div>
+        <div class="name">Prof. Prakash Mahanwar</div>
+        <div class="desig">Vice-Chancellor</div>
+      </div>
+      <div class="org-card">
+        <div class="role">Patron</div>
+        <div class="name">Prof. Laxmikant Dama</div>
+        <div class="desig">Pro Vice-Chancellor</div>
+      </div>
+      <div class="org-card">
+        <div class="role">Conference Chair</div>
+        <div class="name">Dr. Rajivkumar Mente</div>
+        <div class="desig">Director, SCS</div>
+      </div>
+      <div class="org-card">
+        <div class="role">Conveners</div>
+        <div class="name">Dr. J.D. Mashale</div>
+        <div class="name">Dr. C.G. Gardi</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2026 PAH Solapur University | Department of Statistics & Mathematics | Designed for NCMSC-26
+  </div>
+</div>
+
+<script>
+/* 1. NEURAL NETWORK BACKGROUND */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let w, h, particles = [];
+
+function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * w; this.y = Math.random() * h;
+    this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > w) this.vx *= -1;
+    if (this.y < 0 || this.y > h) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath(); ctx.arc(this.x, this.y, 1.5, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0, 243, 255, 0.5)'; ctx.fill();
+  }
+}
+for(let i=0; i<80; i++) particles.push(new Particle());
+
+function animate() {
+  ctx.clearRect(0,0,w,h);
+  particles.forEach((p, i) => {
+    p.update(); p.draw();
+    for(let j=i+1; j<particles.length; j++) {
+      let dx = p.x - particles[j].x, dy = p.y - particles[j].y;
+      let dist = Math.sqrt(dx*dx+dy*dy);
+      if(dist < 100) {
+        ctx.beginPath(); ctx.strokeStyle = `rgba(0, 243, 255, ${0.15 - dist/100*0.15})`;
+        ctx.moveTo(p.x, p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+      }
+    }
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* 2. 3D TILT EFFECT FOR CARD */
+const card = document.getElementById('tiltCard');
+document.addEventListener('mousemove', (e) => {
+  if (window.innerWidth < 768) return; // Disable on mobile
+  const x = (window.innerWidth / 2 - e.pageX) / 40;
+  const y = (window.innerHeight / 2 - e.pageY) / 40;
+  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+});
+
+/* 3. AUDIO PLAYER LOGIC */
+const audio = document.getElementById('confAudio');
+const playBtn = document.getElementById('mainPlayBtn');
+const visualizer = document.getElementById('visualizer');
+const statusText = document.getElementById('trackStatus');
+const icon = playBtn.querySelector('i');
+
+playBtn.addEventListener('click', () => {
+  if (audio.paused) {
+    audio.play();
+    visualizer.classList.add('playing');
+    icon.classList.remove('fa-play');
+    icon.classList.add('fa-pause');
+    statusText.innerText = "Now Playing...";
+    statusText.style.color = "#00f3ff";
+  } else {
+    audio.pause();
+    visualizer.classList.remove('playing');
+    icon.classList.remove('fa-pause');
+    icon.classList.add('fa-play');
+    statusText.innerText = "Paused";
+    statusText.style.color = "#aaa";
+  }
+});
+
+/* 4. COUNTDOWN */
+const target = new Date('Feb 09, 2026 09:00:00').getTime();
+setInterval(() => {
+  const now = new Date().getTime();
+  const diff = target - now;
+  if (diff > 0) {
+    document.getElementById('d').innerText = Math.floor(diff / (1000*60*60*24));
+    document.getElementById('h').innerText = Math.floor((diff % (1000*60*60*24))/(1000*60*60));
+    document.getElementById('m').innerText = Math.floor((diff % (1000*60*60))/(1000*60));
+    document.getElementById('s').innerText = Math.floor((diff % (1000*60))/1000);
+  }
+}, 1000);
+</script>
+
+</body>
+</html>
